@@ -1,28 +1,35 @@
 FROM nvidia/cuda:12.1.1-runtime-ubuntu22.04
 
+# Set environment and install required system dependencies
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip git curl ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
+# Clone and set up ComfyUI framework and dependencies
 WORKDIR /comfyui
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git ./
-RUN pip3 install --no-cache-dir -r /comfyui/requirements.txt
+RUN git clone --branch <pinned-commit-or-branch> https://github.com/comfyanonymous/ComfyUI.git ./
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Custom nodes required by the workflow
-RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git /comfyui/custom_nodes/ComfyUI-VideoHelperSuite
-RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git /comfyui/custom_nodes/ComfyUI-KJNodes
-RUN git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git /comfyui/custom_nodes/ComfyUI-WanVideoWrapper
+# Install custom nodes and their dependencies
+RUN git clone --branch <optional-commit> https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git custom_nodes/ComfyUI-VideoHelperSuite
+RUN git clone --branch <optional-commit> https://github.com/kijai/ComfyUI-KJNodes.git custom_nodes/ComfyUI-KJNodes
+RUN git clone --branch <optional-commit> https://github.com/kijai/ComfyUI-WanVideoWrapper.git custom_nodes/ComfyUI-WanVideoWrapper
 
-RUN if [ -f /comfyui/custom_nodes/ComfyUI-VideoHelperSuite/requirements.txt ]; then pip3 install --no-cache-dir -r /comfyui/custom_nodes/ComfyUI-VideoHelperSuite/requirements.txt; fi
-RUN if [ -f /comfyui/custom_nodes/ComfyUI-KJNodes/requirements.txt ]; then pip3 install --no-cache-dir -r /comfyui/custom_nodes/ComfyUI-KJNodes/requirements.txt; fi
-RUN if [ -f /comfyui/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt ]; then pip3 install --no-cache-dir -r /comfyui/custom_nodes/ComfyUI-WanVideoWrapper/requirements.txt; fi
+RUN for NODE in /comfyui/custom_nodes/*/requirements.txt; do \
+    if [ -f "$NODE" ]; then echo "Installing dependencies for $NODE"; pip3 install --no-cache-dir -r "$NODE"; fi; \
+done
 
+# Set up application directory and install any necessary app-specific dependencies
 WORKDIR /app
-COPY requirements.txt /app/
-RUN pip3 install --no-cache-dir -r /app/requirements.txt
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY . /app
-RUN chmod +x /app/entrypoint.sh
+# Copy the rest of the application code
+COPY . .
 
+# Ensure entrypoint script is executable
+RUN chmod +x entrypoint.sh
+
+# Start the application using the entrypoint script
 CMD ["/app/entrypoint.sh"]

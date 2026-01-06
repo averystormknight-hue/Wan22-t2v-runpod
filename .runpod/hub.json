@@ -5,7 +5,7 @@
   "category": "video",
   "config": {
     "runsOn": "GPU",
-    "containerDiskInGb": 20,
+    "containerDiskInGb": 40,
     "jobTimeoutSec": 3600
   }
 }

@@ -1,5 +1,7 @@
 # Wan2.2 TI2V Serverless
 
+[![Runpod](https://api.runpod.io/badge/averystormknight-hue/Wan22-ti2v-runpod)](https://console.runpod.io/hub/averystormknight-hue/Wan22-ti2v-runpod)
+
 RunPod Serverless worker for Wan2.2 text + image to video (TI2V) with LoRA support, powered by ComfyUI.
 
 ## Features
@@ -90,4 +92,3 @@ If you only have a single LoRA file (no paired low/high), set the other side to 
 ## Notes
 - TI2V requires an image input (`image_url`, `image_base64`, or `image_path`).
 - Build times are long due to pinned ComfyUI + custom nodes.
-

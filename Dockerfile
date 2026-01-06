@@ -3,15 +3,16 @@ FROM nvidia/cuda:12.1.1-runtime-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1
 
-# System deps (includes common runtime libs)
+# System deps (includes common runtime libs often needed by image/video stacks)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip git curl ffmpeg \
     libgl1 libglib2.0-0 fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
-# ComfyUI
+# ComfyUI (pinned)
 WORKDIR /comfyui
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git ./
+RUN git clone https://github.com/comfyanonymous/ComfyUI.git . \
+ && git checkout acbf08c
 
 # CUDA-enabled torch stack (cu121) before other Python deps
 RUN pip3 install torch==2.1.2+cu121 torchvision==0.16.2+cu121 torchaudio==2.1.2+cu121 \
@@ -20,10 +21,15 @@ RUN pip3 install torch==2.1.2+cu121 torchvision==0.16.2+cu121 torchaudio==2.1.2+
 # ComfyUI requirements
 RUN pip3 install -r requirements.txt
 
-# Custom nodes (default branches; pin commits if you need reproducibility)
-RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git custom_nodes/ComfyUI-VideoHelperSuite
-RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git custom_nodes/ComfyUI-KJNodes
-RUN git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git custom_nodes/ComfyUI-WanVideoWrapper
+# Custom nodes (all pinned)
+RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git custom_nodes/ComfyUI-VideoHelperSuite \
+ && cd custom_nodes/ComfyUI-VideoHelperSuite && git checkout 3234937ff5f3ca19068aaba5042771514de2429d
+
+RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git custom_nodes/ComfyUI-KJNodes \
+ && cd custom_nodes/ComfyUI-KJNodes && git checkout 7b13271
+
+RUN git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git custom_nodes/ComfyUI-WanVideoWrapper \
+ && cd custom_nodes/ComfyUI-WanVideoWrapper && git checkout bf1d77f
 
 # Install node-specific deps when present
 RUN for NODE in /comfyui/custom_nodes/*/requirements.txt; do \

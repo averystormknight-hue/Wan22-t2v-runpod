@@ -8,18 +8,22 @@ RunPod Serverless worker for Wan2.2 text + image to video (TI2V) with LoRA suppo
 - TI2V workflow with prompt/negative prompt, steps, cfg, and length controls
 - Up to 4 LoRA pairs (high/low) per request
 - Network volume support for models + LoRAs
+- Auto-downloads model weights when no volume is attached
 - Runsync-compatible API responses with base64 video output
 
 ## Requirements
 - GPU: 80GB VRAM recommended
-- Network Volume: 100GB recommended
-- Model files on volume:
+- Network Volume: 100GB recommended (optional but best for persistence)
+- If no volume is attached, ensure container disk is large enough (40GB+).
+- Model files on volume (or auto-downloaded when no volume):
   - `/runpod-volume/models/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors`
   - `/runpod-volume/models/vae/wan2.2_vae.safetensors`
   - `/runpod-volume/models/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors`
   - `/runpod-volume/models/clip_vision/clip_vision_h.safetensors`
 
 ## Volume Setup (download models)
+If you attach a volume, put the model files here so they persist across restarts.
+
 ```bash
 mkdir -p /runpod-volume/models/diffusion_models \
          /runpod-volume/models/vae \
@@ -40,6 +44,11 @@ curl -L -o /runpod-volume/models/text_encoders/$F "$BASE21/text_encoders/$F"
 
 F=clip_vision_h.safetensors
 curl -L -o /runpod-volume/models/clip_vision/$F "$BASE21/clip_vision/$F"
+```
+
+If no volume is attached, the worker auto-downloads to:
+```
+/comfyui/models/
 ```
 
 ## LoRA Setup
@@ -88,6 +97,7 @@ If you only have a single LoRA file (no paired low/high), set the other side to 
 - `WORKFLOW_PATH` (default: `/app/workflows/wan22_ti2v_api.json`)
 - `COMFY_INPUT_DIR` (default: `/comfyui/input`)
 - `COMFY_OUTPUT_DIR` (default: `/comfyui/output`)
+- `NOVA_SKIP_MODEL_DOWNLOAD` (set to `1` to disable auto-download)
 
 ## Notes
 - TI2V requires an image input (`image_url`, `image_base64`, or `image_path`).

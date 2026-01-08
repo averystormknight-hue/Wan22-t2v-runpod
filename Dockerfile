@@ -15,8 +15,11 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git . \
  && git checkout acbf08c
 
 # CUDA-enabled torch stack (cu121) before other Python deps
-RUN pip3 install torch==2.1.2+cu121 torchvision==0.16.2+cu121 torchaudio==2.1.2+cu121 \
+RUN pip3 install torch==2.4.1+cu121 torchvision==0.19.1+cu121 torchaudio==2.4.1+cu121 \
     --extra-index-url https://download.pytorch.org/whl/cu121
+
+# Pin numpy to 1.x for ComfyUI compatibility
+RUN pip3 install "numpy<2"
 
 # ComfyUI requirements
 RUN pip3 install -r requirements.txt

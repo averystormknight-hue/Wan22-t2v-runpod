@@ -4,7 +4,7 @@
 
 RunPod Serverless worker for Wan2.2 text + image to video (TI2V) with LoRA support, powered by ComfyUI.
 
-## Features
+## Features 
 - TI2V workflow with prompt/negative prompt, steps, cfg, and length controls 
 - Up to 4 LoRA pairs (high/low) per request
 - Network volume support for models + LoRAs

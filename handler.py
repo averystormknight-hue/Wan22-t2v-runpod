@@ -1,4 +1,7 @@
 import base64
+
+# Startup marker for test logs
+print("[TI2V] handler imported and starting…")
 import json
 import os
 import shutil

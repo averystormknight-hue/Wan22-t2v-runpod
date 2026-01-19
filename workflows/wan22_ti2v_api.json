@@ -3,7 +3,7 @@
     "inputs": {
       "model": "wan2.2_ti2v_5B_fp16.safetensors",
       "base_precision": "bf16",
-      "quantization": "none",
+      "quantization": "disabled",
       "load_device": "offload_device",
       "attention_mode": "sageattn",
       "rms_norm_function": "default"
@@ -298,7 +298,7 @@
     "inputs": {
       "model": "wan2.2_ti2v_5B_fp16.safetensors",
       "base_precision": "bf16",
-      "quantization": "none",
+      "quantization": "disabled",
       "load_device": "offload_device",
       "attention_mode": "sageattn",
       "rms_norm_function": "default"

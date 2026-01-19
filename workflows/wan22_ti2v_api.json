@@ -1,9 +1,9 @@
 {
   "122": {
     "inputs": {
-      "model": "wan2.2_ti2v_5B_fp16.safetensors",
+      "model": "wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors",
       "base_precision": "bf16",
-      "quantization": "disabled",
+      "quantization": "fp8_e4m3fn_scaled",
       "load_device": "offload_device",
       "attention_mode": "sageattn",
       "rms_norm_function": "default"
@@ -296,9 +296,9 @@
   },
   "549": {
     "inputs": {
-      "model": "wan2.2_ti2v_5B_fp16.safetensors",
+      "model": "wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors",
       "base_precision": "bf16",
-      "quantization": "disabled",
+      "quantization": "fp8_e4m3fn_scaled",
       "load_device": "offload_device",
       "attention_mode": "sageattn",
       "rms_norm_function": "default"

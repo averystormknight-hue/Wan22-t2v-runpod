@@ -61,22 +61,26 @@ if [ "${NOVA_SKIP_MODEL_DOWNLOAD:-0}" != "1" ]; then
   WAN_BASE_21="https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files"
 
   download_if_missing \
-    "${WAN_BASE}/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors" \
-    "${MODEL_ROOT}/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors"
+    "${WAN_BASE}/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors" \
+    "${MODEL_ROOT}/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors"
   download_if_missing \
-    "${WAN_BASE}/vae/wan2.2_vae.safetensors" \
-    "${MODEL_ROOT}/vae/wan2.2_vae.safetensors"
+    "${WAN_BASE}/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors" \
+    "${MODEL_ROOT}/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
   download_if_missing \
-    "${WAN_BASE_21}/text_encoders/umt5_xxl_fp16.safetensors" \
-    "${MODEL_ROOT}/text_encoders/umt5_xxl_fp16.safetensors"
+    "${WAN_BASE_21}/vae/wan_2.1_vae.safetensors" \
+    "${MODEL_ROOT}/vae/wan_2.1_vae.safetensors"
+  download_if_missing \
+    "${WAN_BASE_21}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors" \
+    "${MODEL_ROOT}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
   download_if_missing \
     "${WAN_BASE_21}/clip_vision/clip_vision_h.safetensors" \
     "${MODEL_ROOT}/clip_vision/clip_vision_h.safetensors"
 else
   REQUIRED=(
-    "${MODEL_ROOT}/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors"
-    "${MODEL_ROOT}/vae/wan2.2_vae.safetensors"
-    "${MODEL_ROOT}/text_encoders/umt5_xxl_fp16.safetensors"
+    "${MODEL_ROOT}/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors"
+    "${MODEL_ROOT}/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
+    "${MODEL_ROOT}/vae/wan_2.1_vae.safetensors"
+    "${MODEL_ROOT}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
     "${MODEL_ROOT}/clip_vision/clip_vision_h.safetensors"
   )
   MISSING=0
@@ -93,11 +97,14 @@ else
     WAN_BASE_21="https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files"
 
     download_if_missing \
-      "${WAN_BASE}/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors" \
-      "${MODEL_ROOT}/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors"
+      "${WAN_BASE}/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors" \
+      "${MODEL_ROOT}/diffusion_models/wan2.2_t2v_high_noise_14B_fp8_scaled.safetensors"
     download_if_missing \
-      "${WAN_BASE}/vae/wan2.2_vae.safetensors" \
-      "${MODEL_ROOT}/vae/wan2.2_vae.safetensors"
+      "${WAN_BASE}/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors" \
+      "${MODEL_ROOT}/diffusion_models/wan2.2_t2v_low_noise_14B_fp8_scaled.safetensors"
+    download_if_missing \
+      "${WAN_BASE_21}/vae/wan_2.1_vae.safetensors" \
+      "${MODEL_ROOT}/vae/wan_2.1_vae.safetensors"
     download_if_missing \
       "${WAN_BASE_21}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors" \
       "${MODEL_ROOT}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"

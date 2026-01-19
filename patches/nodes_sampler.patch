@@ -1,8 +1,13 @@
-*** Begin Patch
-*** Update File: custom_nodes/ComfyUI-WanVideoWrapper/nodes_sampler.py
-@@
--        #I2V
+--- a/custom_nodes/ComfyUI-WanVideoWrapper/nodes_sampler.py
++++ b/custom_nodes/ComfyUI-WanVideoWrapper/nodes_sampler.py
+@@ -213,7 +213,8 @@
+         humo_audio = humo_audio_neg = None
+         has_ref = image_embeds.get("has_ref", False)
+ 
+         #I2V
 -        story_mem_latents = image_embeds.get("story_mem_latents", None)
-+        #I2V
 +        image_cond_mask = None
 +        story_mem_latents = image_embeds.get("story_mem_latents", None)
+         image_cond = image_embeds.get("image_embeds", None)
+         if image_cond is not None:
+             if transformer.in_dim == 16:

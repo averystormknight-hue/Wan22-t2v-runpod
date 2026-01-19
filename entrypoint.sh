@@ -10,6 +10,17 @@ if [ -d /runpod-volume ]; then
   MODEL_ROOT="/runpod-volume/models"
   LORA_ROOT="/runpod-volume/loras"
 
+  # Point ComfyUI to the volume-backed models so loaders see the files
+  if [ -e /comfyui/models ] && [ ! -L /comfyui/models ]; then
+    mv /comfyui/models "/comfyui/models.local.$(date +%s)"
+  fi
+  ln -sfn "$MODEL_ROOT" /comfyui/models
+
+  if [ -e /comfyui/models/loras ] && [ ! -L /comfyui/models/loras ]; then
+    mv /comfyui/models/loras "/comfyui/models/loras.local.$(date +%s)"
+  fi
+  ln -sfn "$LORA_ROOT" /comfyui/models/loras
+
 elif [ -d /workspace ]; then
   # Some RunPod templates mount the volume at /workspace; normalize to expected path
   mkdir -p /workspace/models /workspace/loras

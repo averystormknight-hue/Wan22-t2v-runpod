@@ -1,5 +1,5 @@
---- a/custom_nodes/ComfyUI-WanVideoWrapper/nodes_sampler.py
-+++ b/custom_nodes/ComfyUI-WanVideoWrapper/nodes_sampler.py
+--- a/nodes_sampler.py
++++ b/nodes_sampler.py
 @@ -213,7 +213,8 @@
          humo_audio = humo_audio_neg = None
          has_ref = image_embeds.get("has_ref", False)

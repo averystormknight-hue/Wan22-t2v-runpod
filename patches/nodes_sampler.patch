@@ -1,0 +1,8 @@
+*** Begin Patch
+*** Update File: custom_nodes/ComfyUI-WanVideoWrapper/nodes_sampler.py
+@@
+-        #I2V
+-        story_mem_latents = image_embeds.get("story_mem_latents", None)
++        #I2V
++        image_cond_mask = None
++        story_mem_latents = image_embeds.get("story_mem_latents", None)

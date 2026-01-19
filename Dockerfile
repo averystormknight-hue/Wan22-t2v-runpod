@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 # System deps (includes common runtime libs often needed by image/video stacks)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 python3-pip git curl ffmpeg ca-certificates \
+    python3 python3-pip git curl ffmpeg ca-certificates patch \
     libgl1 libglib2.0-0 fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 

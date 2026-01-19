@@ -1,7 +1,7 @@
 {
   "122": {
     "inputs": {
-      "model": "wan2.2_i2v_1.3b.safetensors",
+      "model": "wan2.2_ti2v_5B_fp16.safetensors",
       "base_precision": "bf16",
       "quantization": "none",
       "load_device": "offload_device",
@@ -296,7 +296,7 @@
   },
   "549": {
     "inputs": {
-      "model": "wan2.2_i2v_1.3b.safetensors",
+      "model": "wan2.2_ti2v_5B_fp16.safetensors",
       "base_precision": "bf16",
       "quantization": "none",
       "load_device": "offload_device",

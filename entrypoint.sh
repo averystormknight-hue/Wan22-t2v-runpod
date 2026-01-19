@@ -61,8 +61,8 @@ if [ "${NOVA_SKIP_MODEL_DOWNLOAD:-0}" != "1" ]; then
   WAN_BASE_21="https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files"
 
   download_if_missing \
-    "${WAN_BASE}/diffusion_models/wan2.2_i2v_1.3b.safetensors" \
-    "${MODEL_ROOT}/diffusion_models/wan2.2_i2v_1.3b.safetensors"
+    "${WAN_BASE}/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors" \
+    "${MODEL_ROOT}/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors"
   download_if_missing \
     "${WAN_BASE}/vae/wan2.2_vae.safetensors" \
     "${MODEL_ROOT}/vae/wan2.2_vae.safetensors"

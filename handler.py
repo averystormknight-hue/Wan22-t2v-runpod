@@ -12,7 +12,7 @@ import requests
 import runpod
 
 COMFY_URL = os.getenv("COMFY_URL", "http://127.0.0.1:8188")
-WORKFLOW_PATH = os.getenv("WORKFLOW_PATH", "/app/workflows/wan22_ti2v_api.json")
+WORKFLOW_PATH = os.getenv("WORKFLOW_PATH", "/app/workflows/wan22_t2v_api.json")
 INPUT_DIR = os.getenv("COMFY_INPUT_DIR", "/comfyui/input")
 OUTPUT_DIR = os.getenv("COMFY_OUTPUT_DIR", "/comfyui/output")
 COMFY_START_TIMEOUT = int(os.getenv("COMFY_START_TIMEOUT", "900"))

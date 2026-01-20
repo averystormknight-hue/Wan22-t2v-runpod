@@ -70,8 +70,8 @@ if [ "${NOVA_SKIP_MODEL_DOWNLOAD:-0}" != "1" ]; then
     "${WAN_BASE_21}/vae/wan_2.1_vae.safetensors" \
     "${MODEL_ROOT}/vae/wan_2.1_vae.safetensors"
   download_if_missing \
-    "${WAN_BASE_21}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors" \
-    "${MODEL_ROOT}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+    "${WAN_BASE_21}/text_encoders/umt5_xxl_fp16.safetensors" \
+    "${MODEL_ROOT}/text_encoders/umt5_xxl_fp16.safetensors"
   download_if_missing \
     "${WAN_BASE_21}/clip_vision/clip_vision_h.safetensors" \
     "${MODEL_ROOT}/clip_vision/clip_vision_h.safetensors"
@@ -140,8 +140,8 @@ else
       "${WAN_BASE_21}/vae/wan_2.1_vae.safetensors" \
       "${MODEL_ROOT}/vae/wan_2.1_vae.safetensors"
     download_if_missing \
-      "${WAN_BASE_21}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors" \
-      "${MODEL_ROOT}/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+      "${WAN_BASE_21}/text_encoders/umt5_xxl_fp16.safetensors" \
+      "${MODEL_ROOT}/text_encoders/umt5_xxl_fp16.safetensors"
     download_if_missing \
       "${WAN_BASE_21}/clip_vision/clip_vision_h.safetensors" \
       "${MODEL_ROOT}/clip_vision/clip_vision_h.safetensors"

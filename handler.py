@@ -136,6 +136,17 @@ def build_mapping(inp, image_filename):
         "__LORA4_LOW_WEIGHT__": low_weights[3],
     }
 
+def strip_image_conditioning(workflow):
+    """Remove image-based conditioning so T2V models don't trigger I2V-only path."""
+    for node_id in ("540", "541", "171"):
+        if node_id in workflow and isinstance(workflow[node_id], dict):
+            inputs = workflow[node_id].get("inputs", {})
+            if isinstance(inputs, dict):
+                inputs["image_embeds"] = None
+                inputs["start_image"] = None
+                inputs["image"] = None
+    return workflow
+
 
 def get_output_file(history):
     outputs = history.get("outputs", {})
@@ -169,15 +180,7 @@ def handler(job):
 
     mapping = build_mapping(inp, image_filename)
     workflow = replace_tokens(workflow, mapping)
-
-    # Force pure text-to-video path (no image conditioning) for 14B T2V models
-    try:
-        if "540" in workflow and "inputs" in workflow["540"]:
-            workflow["540"]["inputs"]["image_embeds"] = None
-        if "541" in workflow and "inputs" in workflow["541"]:
-            workflow["541"]["inputs"]["start_image"] = None
-    except Exception:
-        pass
+    workflow = strip_image_conditioning(workflow)
 
     try:
         resp = requests.post(

@@ -161,15 +161,23 @@ def handler(job):
 
     wait_for_comfyui()
 
+    # T2V endpoint: image is optional; if provided we ignore it to avoid I2V-only path
     image_filename = save_input_image(inp)
-    if not image_filename:
-        return {"error": "image_url, image_base64, or image_path is required for TI2V."}
 
     with open(WORKFLOW_PATH, "r") as f:
         workflow = json.load(f)
 
     mapping = build_mapping(inp, image_filename)
     workflow = replace_tokens(workflow, mapping)
+
+    # Force pure text-to-video path (no image conditioning) for 14B T2V models
+    try:
+        if "540" in workflow and "inputs" in workflow["540"]:
+            workflow["540"]["inputs"]["image_embeds"] = None
+        if "541" in workflow and "inputs" in workflow["541"]:
+            workflow["541"]["inputs"]["start_image"] = None
+    except Exception:
+        pass
 
     try:
         resp = requests.post(

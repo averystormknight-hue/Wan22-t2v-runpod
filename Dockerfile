@@ -31,8 +31,7 @@ RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git custom
 RUN git clone https://github.com/kijai/ComfyUI-KJNodes.git custom_nodes/ComfyUI-KJNodes \
  && cd custom_nodes/ComfyUI-KJNodes && git checkout 7b13271
 
-RUN git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git custom_nodes/ComfyUI-WanVideoWrapper \
- && cd custom_nodes/ComfyUI-WanVideoWrapper && git checkout bf1d77f
+RUN git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git custom_nodes/ComfyUI-WanVideoWrapper
 
 # Apply local patch to WanVideoWrapper (init image_cond_mask)
 COPY patches /patches

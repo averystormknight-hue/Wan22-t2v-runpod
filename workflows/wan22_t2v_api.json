@@ -276,9 +276,23 @@
         "236",
         0
       ],
-      "batch_size": "__LENGTH__"
+      "num_frames": "__LENGTH__",
+      "noise_aug_strength": 0,
+      "start_latent_strength": 1,
+      "end_latent_strength": 1,
+      "force_offload": true,
+      "fun_or_fl2v_model": false,
+      "tiled_vae": false,
+      "vae": [
+        "129",
+        0
+      ],
+      "clip_embeds": [
+        "193",
+        0
+      ]
     },
-    "class_type": "EmptyLatentImage"
+    "class_type": "WanVideoImageToVideoEncode"
   },
   "549": {
     "inputs": {

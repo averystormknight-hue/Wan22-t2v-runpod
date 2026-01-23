@@ -290,6 +290,10 @@
       "clip_embeds": [
         "193",
         0
+      ],
+      "start_image": [
+        "171",
+        0
       ]
     },
     "class_type": "WanVideoImageToVideoEncode"

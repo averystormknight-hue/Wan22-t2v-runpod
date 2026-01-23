@@ -1,5 +1,10 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
+set -e
+
+# Error trap
+trap 'echo "❌ Error on line $LINENO. Command exited with status $?"' ERR
+
+echo "🚀 Starting T2V entrypoint script..."
 
 MODEL_ROOT="/comfyui/models"
 LORA_ROOT="/comfyui/models/loras"

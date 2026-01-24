@@ -136,17 +136,21 @@ def build_mapping(inp, image_filename):
         "__LORA4_LOW_WEIGHT__": low_weights[3],
     }
 
-def strip_image_conditioning(workflow):
-    """Remove image-based conditioning so T2V models don't trigger I2V-only path."""
-    for node_id in ():
-        if node_id in workflow and isinstance(workflow[node_id], dict):
-            inputs = workflow[node_id].get("inputs", {})
-            if isinstance(inputs, dict):
-                inputs["image_embeds"] = None
-                inputs["start_image"] = None
-                inputs["image"] = None
+def switch_to_t2v_node(workflow):
+    """Switch Node 541 from I2V encoder to WanVideoEmptyEmbeds for T2V generation."""
+    if "541" in workflow and isinstance(workflow["541"], dict):
+        node = workflow["541"]
+        node["class_type"] = "WanVideoEmptyEmbeds"
+        inputs = node.get("inputs", {})
+        
+        # Remove inputs not needed for T2V empty embeds
+        for key in ["start_image", "image", "vae", "clip_embeds"]:
+            inputs.pop(key, None)
+            
+        # Ensure T2V inputs are present (width, height, num_frames)
+        # These are already present in the original node config, so no need to add them.
+        
     return workflow
-
 
 def get_output_file(history):
     outputs = history.get("outputs", {})
@@ -199,7 +203,7 @@ def handler(job):
 
     mapping = build_mapping(inp, image_filename)
     workflow = replace_tokens(workflow, mapping)
-    workflow = strip_image_conditioning(workflow)
+    workflow = switch_to_t2v_node(workflow)
 
     try:
         resp = requests.post(

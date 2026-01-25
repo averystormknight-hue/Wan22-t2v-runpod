@@ -137,13 +137,27 @@ def build_mapping(inp, image_filename):
     }
 
 def switch_to_t2v_node(workflow):
-    """Remove image-based conditioning so T2V models don't trigger I2V-only path."""
-    for node_id in ("541",):
-        if node_id in workflow and isinstance(workflow[node_id], dict):
-            inputs = workflow[node_id].get("inputs", {})
-            if isinstance(inputs, dict):
-                inputs["start_image"] = None
-                inputs["image"] = None
+    """Switch Node 541 from I2V encoder to WanVideoEmptyEmbeds for T2V generation."""
+    if "541" in workflow and isinstance(workflow["541"], dict):
+        node = workflow["541"]
+        node["class_type"] = "WanVideoEmptyEmbeds"
+        inputs = node.get("inputs", {})
+        
+        # Comprehensive frame count and dimension parameters
+        length = inputs.get("num_frames", inputs.get("video_frames", "__LENGTH__"))
+        inputs["num_frames"] = length
+        inputs["video_frames"] = length
+        inputs["empty_latent_video_frames"] = length
+        
+        width = inputs.get("width", "__WIDTH__")
+        height = inputs.get("height", "__HEIGHT__")
+        inputs["empty_latent_width"] = width
+        inputs["empty_latent_height"] = height
+        
+        # Remove inputs not needed for T2V empty embeds
+        for key in ["start_image", "image", "vae", "clip_embeds"]:
+            inputs.pop(key, None)
+            
     return workflow
 
 def get_output_file(history):

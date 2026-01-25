@@ -143,13 +143,14 @@ def switch_to_t2v_node(workflow):
         node["class_type"] = "WanVideoEmptyEmbeds"
         inputs = node.get("inputs", {})
         
+        # WanVideoEmptyEmbeds uses 'video_frames' instead of 'num_frames'
+        if "num_frames" in inputs:
+            inputs["video_frames"] = inputs.pop("num_frames")
+        
         # Remove inputs not needed for T2V empty embeds
         for key in ["start_image", "image", "vae", "clip_embeds"]:
             inputs.pop(key, None)
             
-        # Ensure T2V inputs are present (width, height, num_frames)
-        # These are already present in the original node config, so no need to add them.
-        
     return workflow
 
 def get_output_file(history):

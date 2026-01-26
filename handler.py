@@ -146,16 +146,14 @@ def switch_to_t2v_node(workflow):
         # Comprehensive frame count and dimension parameters
         length = inputs.get("num_frames", inputs.get("video_frames", "__LENGTH__"))
         inputs["num_frames"] = length
-        inputs["video_frames"] = length
-        inputs["empty_latent_video_frames"] = length
         
         width = inputs.get("width", "__WIDTH__")
         height = inputs.get("height", "__HEIGHT__")
-        inputs["empty_latent_width"] = width
-        inputs["empty_latent_height"] = height
+        inputs["width"] = width
+        inputs["height"] = height
         
         # Remove inputs not needed for T2V empty embeds
-        for key in ["start_image", "image", "vae", "clip_embeds"]:
+        for key in ["start_image", "image", "vae", "clip_embeds", "video_frames", "empty_latent_video_frames", "empty_latent_width", "empty_latent_height"]:
             inputs.pop(key, None)
             
     return workflow

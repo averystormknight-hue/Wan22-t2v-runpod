@@ -94,7 +94,7 @@ If you only have a single LoRA file (no paired low/high), set the other side to 
 
 ## Environment Variables
 - `COMFY_URL` (default: `http://127.0.0.1:8188`)
-- `WORKFLOW_PATH` (default: `/app/workflows/wan22_ti2v_api.json`)
+- `WORKFLOW_PATH` (default: `/app/workflows/wan22_t2v_api.json`)
 - `COMFY_INPUT_DIR` (default: `/comfyui/input`)
 - `COMFY_OUTPUT_DIR` (default: `/comfyui/output`)
 - `NOVA_SKIP_MODEL_DOWNLOAD` (set to `1` to disable auto-download)

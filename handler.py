@@ -83,15 +83,23 @@ def lora_name(value):
 def build_mapping(inp, image_filename):
     prompt = inp.get("prompt", "")
     negative = inp.get("negative_prompt", "")
-    width = int(inp.get("width", 480))
-    height = int(inp.get("height", 832))
-    length = int(inp.get("length", 81))
-    steps = int(inp.get("steps", 10))
-    cfg = float(inp.get("cfg", 2.0))
-    seed = int(inp.get("seed", 42))
-    scheduler = inp.get("scheduler", "dpm++_sde")
-    context_overlap = int(inp.get("context_overlap", 48))
-    context_frames = int(inp.get("context_frames", min(length, 81)))
+    
+    # Support for grouped 'media_settings' or flat input
+    ms = inp.get("media_settings", {})
+    
+    # User requested control over enhancement. 
+    if inp.get("enhance_prompt", False) or ms.get("enhance_prompt", False):
+        pass
+
+    width = int(ms.get("width", inp.get("width", 480)))
+    height = int(ms.get("height", inp.get("height", 832)))
+    length = int(ms.get("length", inp.get("length", 81)))
+    steps = int(ms.get("steps", inp.get("steps", 25)))
+    cfg = float(ms.get("cfg", inp.get("cfg", 2.0)))
+    seed = int(ms.get("seed", inp.get("seed", 42)))
+    scheduler = ms.get("scheduler", inp.get("scheduler", "dpm++_sde"))
+    context_overlap = int(ms.get("context_overlap", inp.get("context_overlap", 48)))
+    context_frames = int(ms.get("context_frames", inp.get("context_frames", min(length, 81))))
 
     pairs = inp.get("lora_pairs", [])
     highs = ["none"] * 4
@@ -211,6 +219,22 @@ def handler(job):
     workflow = replace_tokens(workflow, mapping)
     workflow = switch_to_t2v_node(workflow)
 
+    # Dynamic High/Low Noise Split (approx 40% of steps)
+    # Node 575 controls the end_step for High Noise and start_step for Low Noise
+    if "575" in workflow:
+        # Get total steps from input or default
+        total_steps = int(mapping.get("__STEPS__", 25))
+        split_step = int(total_steps * 0.4)
+        print(f"Setting High/Low Noise split at step {split_step} (Total: {total_steps})")
+        workflow["575"]["inputs"]["value"] = split_step
+
+    # Force VAE tiling for larger generations to avoid OOM/blur
+    if width * height > 480 * 832:
+        print("Enabling VAE tiling for high-res generation")
+        for node_id in ("130", "612"):
+            if node_id in workflow:
+                workflow[node_id]["inputs"]["enable_vae_tiling"] = True
+    
     try:
         resp = requests.post(
             f"{COMFY_URL}/prompt",
@@ -244,4 +268,6 @@ def handler(job):
     return {"error": "Timed out waiting for output."}
 
 
-runpod.serverless.start({"handler": handler})
+if __name__ == "__main__":
+    runpod.serverless.start({"handler": handler})
+

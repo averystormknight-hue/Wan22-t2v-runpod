@@ -207,6 +207,8 @@ def handler(job):
     with open(WORKFLOW_PATH, "r") as f:
         workflow = json.load(f)
 
+        print("WORKFLOW top-level keys:", list(workflow.keys())[:20])
+
     # Force attention_mode to 'sdpa' to support non-H100 GPUs (e.g. A100/L40)
     for node_id in ("122", "549"):
         if node_id in workflow:

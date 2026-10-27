@@ -229,6 +229,9 @@ def handler(job):
         workflow["575"]["inputs"]["value"] = split_step
 
     # Force VAE tiling for larger generations to avoid OOM/blur
+    width = int(mapping["__WIDTH__"])
+    height = int(mapping["__HEIGHT__"])
+    
     if width * height > 480 * 832:
         print("Enabling VAE tiling for high-res generation")
         for node_id in ("130", "612"):
